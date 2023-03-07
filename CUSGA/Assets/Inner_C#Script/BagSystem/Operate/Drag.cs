@@ -38,7 +38,8 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
             ClickItemID = transform.parent.GetComponent<Plaid_UI>().plaid_ID;
             if (ClickItemID <= BagManager.Instance.boundary_workbag)
                 return;
-            if (listClass.BrushList[ClickItemID]._brushNum == 1)
+            //数量为1情况
+            if (listClass.BrushList[ClickItemID]._brushNum == 1&&!BagManager.Instance.CorrectionFor_12B(listClass.BrushList[ClickItemID]._brushName))
             {
                 for(int i=0;i<=BagManager.Instance.boundary_workbag;i++)
                     if (listClass.BrushList[i] == null)
@@ -58,7 +59,7 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
             ClickItemID = transform.parent.GetComponent<Object_UI>().Object_ID;
             if (ClickItemID != BagManager.Instance.End_element)
                 return;
-            if (listClass.ObjectList[ClickItemID].ObjectNum == 1)
+            if (listClass.ObjectList[ClickItemID].ObjectNum == 1&&!BagManager.Instance.CorrectionFor_12O(listClass.ObjectList[ClickItemID].ObjectNames))
             {
                 for(int i=0;i<BagManager.Instance.boundary_workbag;i++)
                     if (listClass.ObjectList[i] == null)
@@ -116,7 +117,6 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
         else if(currentItemID==BagManager.Instance.End_element&&dragModel==DragModel.ObjectModel)
             return;
         endGameObject = eventData.pointerCurrentRaycast.gameObject;
-        Debug.Log(endGameObject.gameObject.name);
         if (endGameObject != null)
         {
             if (endGameObject.name == ImageName)//格子不为空
@@ -185,11 +185,14 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
                         }
                         else if (plaidID != currentItemID && plaidID > BagManager.Instance.boundary_workbag)
                         {
+                            
                             if (listClass.BrushList[currentItemID]._brushNum >= 2)
                                 listClass.BrushList[currentItemID]._brushNum--;
-                            else
+                            else 
                                 listClass.BrushList[currentItemID] = null;
                         }
+                        
+                        
                         GetComponent<CanvasGroup>().blocksRaycasts = true;
                         BagManager.Instance.RefreshBrush();
                         return;
