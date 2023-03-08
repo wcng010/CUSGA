@@ -8,8 +8,6 @@ public class Ohters : MonoBehaviour
     private Interaction inter;
 
     private int succeed;
-    private bool have;
-    private bool one;//已经满足需求，只执行一次
     private List<ObjectData> dataList;
     void Start()
     {
@@ -27,20 +25,21 @@ public class Ohters : MonoBehaviour
 
     private void FindneedObject()
     {
-        if (inter.sprite.enabled && !have)
+        if (inter.sprite.enabled)
         {
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 dataList = BagManager.Instance.DataListClass.ObjectList;
                 for (int i = 0; i < needStrings.Length; i++)
                 {
                     for (int j = 0; j < dataList.Count; j++)
                     {
-                        if (dataList[j] != null && dataList[j].ObjectNames == needStrings[i])
+                        if (dataList[j] != null && dataList[j].ObjectNames == needStrings[i].ToString())
                         {
-                            if (dataList[i].ObjectNum > 0)
+                            if (dataList[j].ObjectNum > 0)
                             {
                                 succeed++;
+                                dataList[j].ObjectNum--;
                                 break;
                             }
                         }
@@ -51,11 +50,10 @@ public class Ohters : MonoBehaviour
             }
         }
 
-        if (succeed >= needStrings.Length && !one)
+        if (succeed >= needStrings.Length)
         {
-            have = true;
             inter.index++;
-            one = true;
+            this.enabled = false;
         }
     }
 }

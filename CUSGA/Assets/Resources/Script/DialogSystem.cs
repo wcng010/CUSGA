@@ -17,7 +17,7 @@ public class DialogSystem : MonoBehaviour
     public float textSpeed = 0.1f;
 
     private int index;
-    private bool textFinish;
+    private bool textFinish = false;
 
     [HideInInspector]
     public Sprite otherFace;
@@ -25,6 +25,7 @@ public class DialogSystem : MonoBehaviour
     public Sprite playerFace;
 
     private List<string> textList = new List<string>();
+    Coroutine Co;
 
     private void Awake()
     {
@@ -35,21 +36,21 @@ public class DialogSystem : MonoBehaviour
     private void OnEnable()
     {
         Face();
-        StartCoroutine(SetTextUI());
+        Co = StartCoroutine(SetTextUI());
     }
 
     void Update()
     {
         //对话没有完成
-        if(Input.GetKeyDown(KeyCode.R) && index != textList.Count)
+        if(Input.GetKeyDown(KeyCode.F) && index != textList.Count)
         {
             Face();
 
             if (textFinish)
-            StartCoroutine(SetTextUI());
+                Co = StartCoroutine(SetTextUI());
             else
             {
-                StopCoroutine(SetTextUI());
+                StopCoroutine(Co);
                 textLabel.text = textList[index].ToString();
                 index++;
                 textFinish = true;
@@ -86,18 +87,16 @@ public class DialogSystem : MonoBehaviour
         switch (textList[index].Trim().ToString())
         {
             case "A":
-                if (otherFace != null)
-                    faceImage.sprite = otherFace;
+                faceImage.sprite = otherFace;
                 index++;
                 break;
             case "B":
-                if (playerFace != null)
-                    faceImage.sprite = playerFace;
+                faceImage.sprite = playerFace;
                 index++;
                 break;
             default:
                 break;
-        }       
+        }
     }
 
     IEnumerator SetTextUI()
