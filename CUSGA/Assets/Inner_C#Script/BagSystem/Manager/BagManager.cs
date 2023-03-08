@@ -18,6 +18,8 @@ public class BagManager : Singleton<BagManager>
     public GameObject WorkGrid;
     [Header("交换台格子Grid")]
     public GameObject exchangeGrid;
+    [Header("物品栏格子Grid")] 
+    public GameObject InventoryGrid;
     [Header("格子Brush预设体")]
     public GameObject plaid;
     [Header("格子笔画数组")]
@@ -32,8 +34,8 @@ public class BagManager : Singleton<BagManager>
     public int boundary_workbag;
     [Header("背包兑换台分界线")] 
     public int boundary_exchange;
-    [NonSerialized]
-    public int End_element;
+    [Header("背包物品栏分界线")] 
+    public int boundary_Inventory;
     [Header("合成检测数组")] 
     private string[] CheckStrings = new string[9];
     private String CheckString;
@@ -75,13 +77,17 @@ public class BagManager : Singleton<BagManager>
             ObjectList.Add(Instantiate(plaid_Object));
             ObjectList[i].GetComponent<Object_UI>().Object_ID = i;
             ObjectList[i].GetComponent<Object_UI>().InitObject(DataListClass.ObjectList[i],i);
-            if (i == DataListClass.ObjectList.Count-1)
+            if(i<boundary_Inventory)
+            {
+                ObjectList[i].transform.SetParent(plaidGrid.transform);
+            }
+            else if (i == boundary_Inventory)
             {
                 ObjectList[i].transform.SetParent(WorkGrid.transform);
             }
-            else
+            else if (i > boundary_Inventory)
             {
-                ObjectList[i].transform.SetParent(plaidGrid.transform);
+                ObjectList[i].transform.SetParent(InventoryGrid.transform);
             }
         }
     }
@@ -102,6 +108,12 @@ public class BagManager : Singleton<BagManager>
         {
             Destroy(exchangeGrid.transform.GetChild(i).gameObject);
         }
+
+        for (int i = 0; i < InventoryGrid.transform.childCount; i++)
+        {
+            Destroy(InventoryGrid.transform.GetChild(i).gameObject);
+        }
+
         Debug.Log("背包清空");
     }
 
@@ -144,13 +156,13 @@ public class BagManager : Singleton<BagManager>
     /// </summary>
     public void Decompose()
     {
-        if (ObjectList[End_element].GetComponent<Object_UI>().IsActive)
+        if (ObjectList[boundary_Inventory].GetComponent<Object_UI>().IsActive)
         {
-            for (int i = 0;i<DataListClass.ObjectList[End_element].Brush_composition.Length; i++)
+            for (int i = 0;i<DataListClass.ObjectList[boundary_Inventory].Brush_composition.Length; i++)
             {
                 for (int j = 0; j < DataListClass.BrushList.Count; j++)
                 {
-                    if (DataListClass.ObjectList[End_element].Brush_composition[i].ToString() ==
+                    if (DataListClass.ObjectList[boundary_Inventory].Brush_composition[i].ToString() ==
                         DataListClass.BrushList[j]._brushName)
                     {
                         
@@ -160,19 +172,19 @@ public class BagManager : Singleton<BagManager>
                     }
                 }
             }
-            if (DataListClass.ObjectList[End_element].ObjectNum == 1&&!CorrectionFor_12O(DataListClass.ObjectList[End_element].ObjectNames))
+            if (DataListClass.ObjectList[boundary_Inventory].ObjectNum == 1&&!CorrectionFor_12O(DataListClass.ObjectList[boundary_Inventory].ObjectNames))
             {
                 for (int i = 0; i <boundary_workbag ; i++)
                 {
                     if (DataListClass.ObjectList[i] == null)
                     {
-                        DataListClass.ObjectList[i] = DataListClass.ObjectList[End_element];
+                        DataListClass.ObjectList[i] = DataListClass.ObjectList[boundary_Inventory];
                         DataListClass.ObjectList[i].ObjectNum--;
                         break;
                     }
                 }
             }
-            DataListClass.ObjectList[End_element] = null;
+            DataListClass.ObjectList[boundary_Inventory] = null;
             BagManager.Instance.RefreshObject();
         }
         else//分解失败
@@ -226,8 +238,25 @@ public class BagManager : Singleton<BagManager>
         }
         RefreshBrush();
     }
+
+    public void CorrectionFor_01O(int ClickItemID)
+    {
+        if (DataListClass.ObjectList[ClickItemID].ObjectNum == 1&&!CorrectionFor_12O(DataListClass.ObjectList[ClickItemID].ObjectNames))
+        {
+            for(int i=0;i<boundary_workbag;i++)
+                if (DataListClass.ObjectList[i] == null)
+                {
+                    DataListClass.ObjectList[i] = DataListClass.ObjectList[ClickItemID];
+                    DataListClass.ObjectList[ClickItemID] = null;
+                    RefreshObject();
+                    return;
+                }
+        }
+    }
+
+
     /// <summary>
-    /// true为数量为2的情况，false为数量为一的情况
+    /// true为数量为2的情况，false为数量为1的情况
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
@@ -243,20 +272,57 @@ public class BagManager : Singleton<BagManager>
         return false;
     }
 
+
     public bool CorrectionFor_12O(string name)
     {
-        for (int i = 0; i < End_element; i++)
+        for (int i = 0; i < boundary_Inventory; i++)
         {
-            if (DataListClass.ObjectList[i]!=null&&name == DataListClass.ObjectList[i].ObjectNames)
+            if (DataListClass.ObjectList[i] != null && name == DataListClass.ObjectList[i].ObjectNames)
             {
                 return true;
             }
         }
+
         return false;
     }
 
-    public void Start()
+    public void DeleteSameObject(int MyID,int FirstIndex,int EndIndex)
     {
-        End_element = DataListClass.ObjectList.Count - 1;
+        for (int i = FirstIndex; i < EndIndex; i++)
+        {
+            if (DataListClass.ObjectList[i] != null &&
+                DataListClass.ObjectList[i].ObjectNames == DataListClass.ObjectList[MyID].ObjectNames&&i!=MyID)
+            {
+                DataListClass.ObjectList[i].ObjectNum++;
+                DataListClass.ObjectList[i] = null;
+            }
+        }
+    }
+
+    public void ChangeCorrection()
+    {
+        if (DataListClass.BrushList[boundary_exchange+1]!=null&&
+            DataListClass.BrushList[boundary_exchange+3]!=null&&
+            (DataListClass.BrushList[boundary_exchange + 1]._brushName ==
+             DataListClass.BrushList[boundary_exchange + 3]._brushName))
+        {
+            DataListClass.BrushList[boundary_exchange + 3]._brushNum++;
+            DataListClass.BrushList[boundary_exchange + 3] = null;
+        }
+
+        if (DataListClass.BrushList[boundary_exchange + 2] != null &&
+            DataListClass.BrushList[boundary_exchange + 3] != null &&
+            (DataListClass.BrushList[boundary_exchange + 2]._brushName ==
+             DataListClass.BrushList[boundary_exchange + 3]._brushName))
+        {
+            DataListClass.BrushList[boundary_exchange + 3]._brushNum++;
+            DataListClass.BrushList[boundary_exchange + 3] = null;
+        }
+    }
+
+
+    private void Start()
+    {
+        RefreshObject();
     }
 }

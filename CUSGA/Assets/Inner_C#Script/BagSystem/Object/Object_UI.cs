@@ -29,15 +29,12 @@ public class Object_UI : MonoBehaviour
             iteminPlaid.SetActive(false);
             return;
         }
-
         IsActive = true;
         Brush_composition = objectData.Brush_composition;
         ObjectName_item = objectData.ObjectNames;
         object_plaid.sprite =objectData.ObjectUI_Bag;
-        if (Num == BagManager.Instance.End_element)
+        if (Num >= BagManager.Instance.boundary_Inventory)
             return;
         objectNum.text = objectData.ObjectNum.ToString();
     }
-
-
 }

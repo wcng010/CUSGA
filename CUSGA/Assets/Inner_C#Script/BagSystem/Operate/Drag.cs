@@ -54,11 +54,33 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
             listClass.BrushList[ClickItemID] = null;
             BagManager.Instance.RefreshBrush();
         }
+        
         else if (dragModel == DragModel.ObjectModel)
         {
             ClickItemID = transform.parent.GetComponent<Object_UI>().Object_ID;
-            if (ClickItemID != BagManager.Instance.End_element)
+            if (ClickItemID < BagManager.Instance.boundary_Inventory)
                 return;
+            if (ClickItemID > BagManager.Instance.boundary_Inventory && !BagManager.Instance.plaidGrid.activeSelf)
+            {
+                //使用道具函数
+                if (listClass.ObjectList[ClickItemID].ObjectNum == 1&&!BagManager.Instance.CorrectionFor_12O(listClass.ObjectList[ClickItemID].ObjectNames))
+                {
+                    for(int i=0;i<BagManager.Instance.boundary_workbag;i++)
+                        if (listClass.ObjectList[i] == null)
+                        {
+                            listClass.ObjectList[i] = listClass.ObjectList[ClickItemID];
+                            listClass.ObjectList[ClickItemID].ObjectNum -= 1;
+                            listClass.ObjectList[ClickItemID] = null;
+                            BagManager.Instance.RefreshObject();
+                            return;
+                        }
+                    
+                }
+                listClass.ObjectList[ClickItemID] = null;
+                BagManager.Instance.RefreshObject();
+                return;
+            }
+            
             if (listClass.ObjectList[ClickItemID].ObjectNum == 1&&!BagManager.Instance.CorrectionFor_12O(listClass.ObjectList[ClickItemID].ObjectNames))
             {
                 for(int i=0;i<BagManager.Instance.boundary_workbag;i++)
@@ -91,7 +113,7 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
         else if (dragModel == DragModel.ObjectModel)
         {
             currentItemID = originalParent.GetComponent<Object_UI>().Object_ID;
-            if (currentItemID == BagManager.Instance.End_element)
+            if (currentItemID >= BagManager.Instance.boundary_Inventory)
                 return;
             ImageName = "object_Image";
             plaidName = "plaid_Object(Clone)";
@@ -105,7 +127,7 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
     {
         if (currentItemID > BagManager.Instance.boundary_workbag&&dragModel==DragModel.BrushModel)
             return;
-        else if(currentItemID==BagManager.Instance.End_element&&dragModel==DragModel.ObjectModel)
+        else if(currentItemID>=BagManager.Instance.boundary_Inventory&&dragModel==DragModel.ObjectModel)
             return;
         transform.position = eventData.position;
     }
@@ -114,7 +136,7 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
     {
         if (currentItemID > BagManager.Instance.boundary_workbag&&dragModel==DragModel.BrushModel)
             return;
-        else if(currentItemID==BagManager.Instance.End_element&&dragModel==DragModel.ObjectModel)
+        else if(currentItemID>=BagManager.Instance.boundary_Inventory&&dragModel==DragModel.ObjectModel)
             return;
         endGameObject = eventData.pointerCurrentRaycast.gameObject;
         if (endGameObject != null)
@@ -130,8 +152,8 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
                     return;
                 }
                 
-                if (dragModel == DragModel.ObjectModel&&endGameObject.GetComponentInParent<Object_UI>().Object_ID ==
-                    BagManager.Instance.End_element)//字拖到分解台
+                if (dragModel == DragModel.ObjectModel&&endGameObject.GetComponentInParent<Object_UI>().Object_ID >=
+                    BagManager.Instance.boundary_Inventory)//字拖到分解台
                 {
                     transform.SetParent(originalParent);
                     transform.position = originalParent.position;
@@ -168,7 +190,6 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
                 return;
             }
             
-            
             else if (eventData.pointerCurrentRaycast.gameObject.name == plaidName)//格子为空
             {
                 transform.SetParent(endGameObject.transform);
@@ -185,13 +206,15 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
                         }
                         else if (plaidID != currentItemID && plaidID > BagManager.Instance.boundary_workbag)
                         {
-                            
+                            if (plaidID > BagManager.Instance.boundary_exchange)
+                            {
+                                BagManager.Instance.ChangeCorrection();
+                            }
                             if (listClass.BrushList[currentItemID]._brushNum >= 2)
                                 listClass.BrushList[currentItemID]._brushNum--;
                             else 
                                 listClass.BrushList[currentItemID] = null;
                         }
-                        
                         
                         GetComponent<CanvasGroup>().blocksRaycasts = true;
                         BagManager.Instance.RefreshBrush();
@@ -206,21 +229,22 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
                     }
                 }
                 
-                
-                
-                
                 else if (dragModel == DragModel.ObjectModel)
                 {
                     objectID = endGameObject.GetComponent<Object_UI>().Object_ID;
                     if (listClass.ObjectList[objectID] == null)
                     {
                             listClass.ObjectList[objectID] = listClass.ObjectList[currentItemID];
-                        if (objectID != currentItemID && objectID != BagManager.Instance.End_element)
+                        if (objectID != currentItemID && objectID < BagManager.Instance.boundary_Inventory)
                         {
                             listClass.ObjectList[currentItemID] = null;
                         }
-                        else if (objectID != currentItemID && objectID == BagManager.Instance.End_element)
+                        else if (objectID != currentItemID && objectID >= BagManager.Instance.boundary_Inventory)
                         {
+                            if (objectID > BagManager.Instance.boundary_Inventory)
+                            {
+                                BagManager.Instance.DeleteSameObject(objectID,BagManager.Instance.boundary_Inventory+1,listClass.ObjectList.Count);
+                            }
                             if (listClass.ObjectList[currentItemID].ObjectNum >= 2)
                                 listClass.ObjectList[currentItemID].ObjectNum--;
                             else

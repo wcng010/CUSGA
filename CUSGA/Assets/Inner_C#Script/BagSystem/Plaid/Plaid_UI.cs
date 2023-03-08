@@ -39,9 +39,5 @@ public class Plaid_UI : MonoBehaviour
         if(plaid_ID<=BagManager.Instance.boundary_workbag)
         brushNum.text = brushData._brushNum.ToString();
     }
-
-    private void OnEnable()
-    {
-        
-    }
+    
 }
