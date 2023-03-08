@@ -20,8 +20,12 @@ public class Plaid_UI : MonoBehaviour
     public GameObject iteminPlaid;
     public Text brushNum;
     
-    public void InitPlaid(BrushData brushData,int i)
+    public void InitPlaid(BrushData brushData)
     {
+        if (plaid_ID > BagManager.Instance.boundary_exchange)
+        {
+            this.GetComponent<Image>().color = new Color(255, 0, 202, 255);
+        }
         //this.GetComponent<RectTransform>().localScale = new Vector3(2, 2, 1);
         if (brushData == null||brushData._brushNum<=0)
         {
@@ -29,11 +33,10 @@ public class Plaid_UI : MonoBehaviour
             iteminPlaid.SetActive(false);
             return;
         }
-
         IsActive = true;
         brushName_item = brushData._brushName;
         brush_plaid.sprite = brushData._brushSprite;
-        if(i<=BagManager.Instance.boundary_workbag)
+        if(plaid_ID<=BagManager.Instance.boundary_workbag)
         brushNum.text = brushData._brushNum.ToString();
     }
     
