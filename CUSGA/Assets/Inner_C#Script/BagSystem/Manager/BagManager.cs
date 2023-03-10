@@ -144,12 +144,8 @@ public class BagManager : Singleton<BagManager>
                 RefreshBrush();
                 return;
             }
-            else//合成失败
-            {
-                Debug.Log("合成失败");
-            }
         }
-
+        Debug.Log("合成失败");
     }
     /// <summary>
     /// 遍历所有data笔画让每个笔画数加1
