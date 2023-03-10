@@ -32,8 +32,6 @@ public class Interaction : MonoBehaviour
     private void Update()
     {
         InteractionObj();
-
-        InteractionChat();
     }
 
     void InteractionObj()
@@ -50,6 +48,7 @@ public class Interaction : MonoBehaviour
                         dataList[i].ObjectNum++;
                         if (transform.parent != null)
                             Destroy(transform.parent.gameObject);
+                        break;
                     }
 
                 }
@@ -57,7 +56,7 @@ public class Interaction : MonoBehaviour
         }
     }
 
-    void InteractionChat()
+    public void InteractionChat()
     {
         //与人物交互
         if (sprite != null && !IsObj)
@@ -68,7 +67,6 @@ public class Interaction : MonoBehaviour
                 if (index >= textFile.Length)
                     return;
 
-                // if(thisFace != null) //获取该人物头像
                 DialogSystem.Instance.otherFace = thisFace;
 
                 DialogSystem.Instance.GetTextFromFile(textFile[index]);//读取文件内容

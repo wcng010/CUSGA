@@ -2,30 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ohters : MonoBehaviour
+public class Ohters<T> : MonoBehaviour where T : class
 {
-    public string[] needStrings;
-    private Interaction inter;
+    private static T instance;
+    public static T Instance => instance;
 
-    private int succeed;
-    private List<ObjectData> dataList;
-    void Start()
+    public string[] needStrings;
+
+    protected Collider2D coll;
+    protected SpriteRenderer spr;
+    protected Interaction inter;
+
+    protected int succeed;
+    protected bool close = false;
+    protected List<ObjectData> dataList;
+
+    protected virtual void Awake()
+    {
+        instance = this as T;
+    }
+
+    public virtual void Start()
     {
         succeed = 0;
         inter = GetComponentInChildren<Interaction>();
+        coll = GetComponent<Collider2D>();
+        spr = GetComponent<SpriteRenderer>();
     }
-
-    void Update()
+    public virtual void FindneedObject()
     {
-        if(inter == null)
-            return;
-
-       FindneedObject();
-    }
-
-    private void FindneedObject()
-    {
-        if (inter.sprite.enabled)
+        //首先要靠近 搜索没有成功过 聊天框没有出来
+        if (inter.sprite.enabled && !close && !inter.chatFrame.activeInHierarchy)
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
@@ -53,7 +60,13 @@ public class Ohters : MonoBehaviour
         if (succeed >= needStrings.Length)
         {
             inter.index++;
-            this.enabled = false;
+            close = true;
         }
+    }
+
+    public virtual void ShowObject()
+    {
+        coll.isTrigger = true;
+        spr.enabled = true;
     }
 }

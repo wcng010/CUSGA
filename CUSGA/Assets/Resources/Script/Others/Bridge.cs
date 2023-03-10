@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrafficLight : Ohters<TrafficLight>
+public class Bridge : Ohters<Bridge>
 {
-    public GameObject stopCar;
-
     void Update()
     {
         FindneedObject();
@@ -14,10 +12,9 @@ public class TrafficLight : Ohters<TrafficLight>
 
         if(inter.index == 1 && Input.GetKeyDown(KeyCode.F))
         {
-            stopCar.layer = LayerMask.NameToLayer("Car");
-            coll.isTrigger = true;
-
-            //½áÊø
+            ShowObject();
+            inter.index++;
         }
+           
     }
 }
