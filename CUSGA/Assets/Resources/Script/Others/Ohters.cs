@@ -55,13 +55,16 @@ public class Ohters<T> : MonoBehaviour where T : class
 
                 }
             }
+
+            if (succeed >= needStrings.Length)
+            {
+                inter.index++;
+                close = true;
+            }
+
         }
 
-        if (succeed >= needStrings.Length)
-        {
-            inter.index++;
-            close = true;
-        }
+        
     }
 
     public virtual void ShowObject()

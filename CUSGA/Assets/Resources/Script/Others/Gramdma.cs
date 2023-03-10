@@ -20,7 +20,7 @@ public class Gramdma : Ohters<Gramdma>
         }
 
         FindneedObject();
-
+        
         inter.InteractionChat();
     }
 
