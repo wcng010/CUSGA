@@ -12,9 +12,12 @@ public class TrafficLight : Ohters<TrafficLight>
 
         inter.InteractionChat();
 
-        if(inter.index == 1)
+        if(inter.index == 1 && Input.GetKeyDown(KeyCode.F))
         {
-            stopCar.SetActive(true);
+            stopCar.layer = LayerMask.NameToLayer("Car");
+            coll.isTrigger = true;
+
+            //½áÊø
         }
     }
 }

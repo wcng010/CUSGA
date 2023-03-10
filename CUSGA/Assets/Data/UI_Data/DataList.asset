@@ -43,12 +43,19 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   ObjectList:
   - {fileID: 11400000, guid: d118b1aa32e1d6049a89e5a949fcc882, type: 2}
   - {fileID: 11400000, guid: 75a6758b2b7de5e438fb9bb5c3466bf1, type: 2}
   - {fileID: 11400000, guid: 9a34155e890b09b44bdaea6eef3ce81d, type: 2}
   - {fileID: 11400000, guid: 81f50f8a3ef67f94486a56e6e7fe4d7b, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 677c7fdd377ea7e438f3fc2d222f5c27, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

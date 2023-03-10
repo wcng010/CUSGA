@@ -28,7 +28,7 @@ public class Gramdma : Ohters<Gramdma>
     {
         base.FindneedObject();
 
-        if (succeed >= needStrings.Length)
+        if (anim != null && succeed >= needStrings.Length)
             anim.SetBool("stand", true);
     }
 }

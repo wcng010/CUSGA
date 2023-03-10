@@ -314,13 +314,13 @@ GameObject:
   m_Component:
   - component: {fileID: 111549896}
   - component: {fileID: 111549895}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: stopCar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &111549895
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -331,7 +331,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.06496024, y: 0.45472193}
@@ -1098,6 +1098,14 @@ PrefabInstance:
     - target: {fileID: 5806755671647823771, guid: 2a7ea43fc39d5f54493600fe052fc484, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5806755671647823772, guid: 2a7ea43fc39d5f54493600fe052fc484, type: 3}
+      propertyPath: boundary_workbag
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 5806755671647823772, guid: 2a7ea43fc39d5f54493600fe052fc484, type: 3}
+      propertyPath: boundary_exchange
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 5806755672057656475, guid: 2a7ea43fc39d5f54493600fe052fc484, type: 3}
       propertyPath: m_IsActive

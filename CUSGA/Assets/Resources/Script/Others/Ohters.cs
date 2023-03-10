@@ -8,6 +8,9 @@ public class Ohters<T> : MonoBehaviour where T : class
     public static T Instance => instance;
 
     public string[] needStrings;
+
+    protected Collider2D coll;
+    protected SpriteRenderer spr;
     protected Interaction inter;
 
     protected int succeed;
@@ -23,6 +26,8 @@ public class Ohters<T> : MonoBehaviour where T : class
     {
         succeed = 0;
         inter = GetComponentInChildren<Interaction>();
+        coll = GetComponent<Collider2D>();
+        spr = GetComponent<SpriteRenderer>();
     }
     public virtual void FindneedObject()
     {
@@ -57,5 +62,11 @@ public class Ohters<T> : MonoBehaviour where T : class
             inter.index++;
             close = true;
         }
+    }
+
+    public virtual void ShowObject()
+    {
+        coll.isTrigger = true;
+        spr.enabled = true;
     }
 }
