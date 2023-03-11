@@ -45,8 +45,7 @@ public class Ohters<T> : MonoBehaviour where T : class
                         {
                             if (dataList[j].ObjectNum > 0)
                             {
-                                succeed++;
-                                dataList[j].ObjectNum--;
+                                succeed++;                             
                                 break;
                             }
                         }
@@ -55,18 +54,40 @@ public class Ohters<T> : MonoBehaviour where T : class
 
                 }
             }
+
+            if (succeed >= needStrings.Length)
+            {
+                //找到全部才能减少
+                for (int i = 0; i < needStrings.Length; i++)
+                {
+                    for (int j = 0; j < dataList.Count; j++)
+                    {
+                        if (dataList[j] != null && dataList[j].ObjectNames == needStrings[i].ToString())
+                        {
+                            if (dataList[j].ObjectNum > 0)
+                            {
+                                dataList[j].ObjectNum--;
+                                break;
+                            }
+                        }
+
+                    }
+
+                }
+
+                inter.index++;
+                close = true;
+            }
+
         }
 
-        if (succeed >= needStrings.Length)
-        {
-            inter.index++;
-            close = true;
-        }
+        
     }
 
     public virtual void ShowObject()
     {
         coll.isTrigger = true;
         spr.enabled = true;
+        inter.index++;
     }
 }

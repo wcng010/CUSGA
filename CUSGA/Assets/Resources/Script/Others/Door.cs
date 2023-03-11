@@ -13,7 +13,6 @@ public class Door : Ohters<Door>
         if (inter.index == 1 && Input.GetKeyDown(KeyCode.F))
         {
             ShowObject();
-            inter.index++;
         }
 
     }

@@ -14,13 +14,14 @@ public class Gramdma : Ohters<Gramdma>
 
     void Update()
     {
-        if (anim != null && anim.GetBool("stand") && inter.index == 1 && !inter.chatFrame.activeInHierarchy)
+        //anim != null && anim.GetBool("stand") &&
+        if ( inter.index == 1 && !inter.chatFrame.activeInHierarchy)
         {
             inter.index++;
         }
 
         FindneedObject();
-
+        
         inter.InteractionChat();
     }
 
