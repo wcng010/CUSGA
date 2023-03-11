@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Bridge : Ohters<Bridge>
 {
+    private void Start()
+    {
+        base.Start();
+        BagManager.Instance.useObject += useBridge;
+    }
+
     void Update()
     {
         FindneedObject();
@@ -14,6 +20,13 @@ public class Bridge : Ohters<Bridge>
         {
             ShowObject();
         }
-           
+    }
+    private void useBridge()
+    {
+        if (inter.sprite.enabled)
+        {
+            ShowObject();
+            BagManager.Instance.UsedCount++;
+        }
     }
 }

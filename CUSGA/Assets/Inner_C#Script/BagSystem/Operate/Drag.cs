@@ -62,8 +62,18 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
             ClickItemID = transform.parent.GetComponent<Object_UI>().Object_ID;
             if (ClickItemID < BagManager.Instance.boundary_Inventory)
                 return;
-            if (ClickItemID > BagManager.Instance.boundary_Inventory && !BagManager.Instance.plaidGrid.activeSelf)
+            if (ClickItemID > BagManager.Instance.boundary_Inventory && !BagManager.Instance.plaidGrid.activeSelf &&
+                listClass.ObjectList[ClickItemID].CanUse != 1)
+                return;
+            if (ClickItemID > BagManager.Instance.boundary_Inventory && !BagManager.Instance.plaidGrid.activeSelf&&listClass.ObjectList[ClickItemID].CanUse==1)
             {
+                BagManager.Instance.useObject.Invoke();
+                if (BagManager.Instance.UsedCount == 0)
+                {
+                    BagManager.Instance.UsedCount = 0;
+                    return;
+                }
+                BagManager.Instance.UsedCount = 0;
                 //使用道具函数
                 if (listClass.ObjectList[ClickItemID].ObjectNum >= 1&&!BagManager.Instance.CorrectionFor_12O(listClass.ObjectList[ClickItemID].ObjectNames))
                 {
