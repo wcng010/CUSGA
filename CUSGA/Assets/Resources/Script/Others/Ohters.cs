@@ -9,8 +9,6 @@ public class Ohters<T> : MonoBehaviour where T : class
 
     public string[] needStrings;
 
-    protected int[] ints;
-
     protected Collider2D coll;
     protected SpriteRenderer spr;
     protected Interaction inter;
@@ -27,7 +25,6 @@ public class Ohters<T> : MonoBehaviour where T : class
     public virtual void Start()
     {
         succeed = 0;
-        ints = new int[needStrings.Length];
         inter = GetComponentInChildren<Interaction>();
         coll = GetComponent<Collider2D>();
         spr = GetComponent<SpriteRenderer>();
@@ -48,8 +45,7 @@ public class Ohters<T> : MonoBehaviour where T : class
                         {
                             if (dataList[j].ObjectNum > 0)
                             {
-                                succeed++;
-                                ints[i] = j;                                 
+                                succeed++;                             
                                 break;
                             }
                         }
@@ -61,9 +57,22 @@ public class Ohters<T> : MonoBehaviour where T : class
 
             if (succeed >= needStrings.Length)
             {
-                for (int i = 0; i < ints.Length; i++)
+                //找到全部才能减少
+                for (int i = 0; i < needStrings.Length; i++)
                 {
-                    dataList[ints[i]].ObjectNum--;
+                    for (int j = 0; j < dataList.Count; j++)
+                    {
+                        if (dataList[j] != null && dataList[j].ObjectNames == needStrings[i].ToString())
+                        {
+                            if (dataList[j].ObjectNum > 0)
+                            {
+                                dataList[j].ObjectNum--;
+                                break;
+                            }
+                        }
+
+                    }
+
                 }
 
                 inter.index++;
@@ -79,5 +88,6 @@ public class Ohters<T> : MonoBehaviour where T : class
     {
         coll.isTrigger = true;
         spr.enabled = true;
+        inter.index++;
     }
 }

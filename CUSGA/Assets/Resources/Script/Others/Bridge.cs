@@ -13,7 +13,6 @@ public class Bridge : Ohters<Bridge>
         if(inter.index == 1 && Input.GetKeyDown(KeyCode.F))
         {
             ShowObject();
-            inter.index++;
         }
            
     }
