@@ -37,7 +37,7 @@ public class BagManager : Singleton<BagManager>
     [Header("背包物品栏分界线")] 
     public int boundary_Inventory;
     [Header("合成检测数组")] 
-    private string[] CheckStrings = new string[9];
+    private string[] CheckStrings = new string[20];
     private String CheckString;
 
     
