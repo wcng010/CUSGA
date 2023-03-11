@@ -143,6 +143,7 @@ public class BagManager : Singleton<BagManager>
                 item.ObjectNum++;
                 CorrectionFor_01B(boundary_workbag+1,boundary_exchange+1);
                 RefreshBrush();
+                CheckStrings = new string[20];
                 return;
             }
         }
@@ -317,11 +318,26 @@ public class BagManager : Singleton<BagManager>
             DataListClass.BrushList[boundary_exchange + 3] = null;
         }
     }
-    
+
+    public void EnterScenes()
+    {
+        foreach (var brush in DataListClass.BrushList)
+        {
+            if (brush != null)
+                brush._brushNum = 0;
+        }
+
+        foreach (var item in DataListClass.ObjectList)
+        {
+            if (item != null)
+                item.ObjectNum = 0;
+        }
+    }
+
 
 
     private void Start()
-    {
+    {   EnterScenes();
         RefreshObject();
     }
 }

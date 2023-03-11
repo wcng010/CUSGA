@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _brushName: "\u6A2A\u6298\u6298\u6487"
   _brushSprite: {fileID: 21300000, guid: a345ba7d19e05d0488a2666bd86ac796, type: 3}
-  _brushNum: 1
+  _brushNum: 99
