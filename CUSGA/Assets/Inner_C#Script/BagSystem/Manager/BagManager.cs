@@ -124,6 +124,7 @@ public class BagManager : Singleton<BagManager>
         ObjectList.Clear();
     }
     /// <summary>
+    /// 合成函数
     /// 遍历所有data道具，使得匹配道具数量加1.
     /// 存在问题：一开始没有某个道具。
     /// </summary>
@@ -148,26 +149,27 @@ public class BagManager : Singleton<BagManager>
         Debug.Log("合成失败");
     }
     /// <summary>
+    /// 分解函数
     /// 遍历所有data笔画让每个笔画数加1
     /// </summary>
     public void Decompose()
     {
         if (ObjectList[boundary_Inventory].GetComponent<Object_UI>().IsActive)
         {
-            for (int i = 0;i<DataListClass.ObjectList[boundary_Inventory].Brush_composition.Length; i++)
+            for (int i = 0;i<DataListClass.ObjectList[boundary_Inventory].Decomposition.Length; i++)
             {
                 for (int j = 0; j < DataListClass.BrushList.Count; j++)
                 {
-                    if (DataListClass.ObjectList[boundary_Inventory].Brush_composition[i].ToString() ==
+                    if (DataListClass.ObjectList[boundary_Inventory].Decomposition[i] ==
                         DataListClass.BrushList[j]._brushName)
                     {
-                        
                         Debug.Log(DataListClass.BrushList[j]._brushName+"数量加一");
                         DataListClass.BrushList[j]._brushNum++;
                         break;
                     }
                 }
             }
+            
             if (DataListClass.ObjectList[boundary_Inventory].ObjectNum == 1&&!CorrectionFor_12O(DataListClass.ObjectList[boundary_Inventory].ObjectNames))
             {
                 for (int i = 0; i <boundary_workbag ; i++)
@@ -315,6 +317,7 @@ public class BagManager : Singleton<BagManager>
             DataListClass.BrushList[boundary_exchange + 3] = null;
         }
     }
+    
 
 
     private void Start()

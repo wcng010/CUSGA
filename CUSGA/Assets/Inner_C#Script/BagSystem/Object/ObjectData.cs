@@ -11,4 +11,5 @@ public class ObjectData : ScriptableObject
     public Sprite ObjectUI_Scenes;
     public string Brush_composition;
     public int ObjectNum;
+    public string[] Decomposition;
 }

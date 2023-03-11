@@ -39,7 +39,7 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
             if (ClickItemID <= BagManager.Instance.boundary_workbag)
                 return;
             //数量为1情况
-            if (listClass.BrushList[ClickItemID]._brushNum == 1&&!BagManager.Instance.CorrectionFor_12B(listClass.BrushList[ClickItemID]._brushName))
+            if (listClass.BrushList[ClickItemID]._brushNum >= 1&&!BagManager.Instance.CorrectionFor_12B(listClass.BrushList[ClickItemID]._brushName))
             {
                 for(int i=0;i<=BagManager.Instance.boundary_workbag;i++)
                     if (listClass.BrushList[i] == null)
@@ -55,6 +55,8 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
             BagManager.Instance.RefreshBrush();
         }
         
+        
+        
         else if (dragModel == DragModel.ObjectModel)
         {
             ClickItemID = transform.parent.GetComponent<Object_UI>().Object_ID;
@@ -63,7 +65,7 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
             if (ClickItemID > BagManager.Instance.boundary_Inventory && !BagManager.Instance.plaidGrid.activeSelf)
             {
                 //使用道具函数
-                if (listClass.ObjectList[ClickItemID].ObjectNum == 1&&!BagManager.Instance.CorrectionFor_12O(listClass.ObjectList[ClickItemID].ObjectNames))
+                if (listClass.ObjectList[ClickItemID].ObjectNum >= 1&&!BagManager.Instance.CorrectionFor_12O(listClass.ObjectList[ClickItemID].ObjectNames))
                 {
                     for(int i=0;i<BagManager.Instance.boundary_workbag;i++)
                         if (listClass.ObjectList[i] == null)
@@ -81,7 +83,7 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
                 return;
             }
             
-            if (listClass.ObjectList[ClickItemID].ObjectNum == 1&&!BagManager.Instance.CorrectionFor_12O(listClass.ObjectList[ClickItemID].ObjectNames))
+            if (listClass.ObjectList[ClickItemID].ObjectNum >= 1&&!BagManager.Instance.CorrectionFor_12O(listClass.ObjectList[ClickItemID].ObjectNames))
             {
                 for(int i=0;i<BagManager.Instance.boundary_workbag;i++)
                     if (listClass.ObjectList[i] == null)
