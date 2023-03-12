@@ -12,4 +12,5 @@ public class ObjectData : ScriptableObject
     public string Brush_composition;
     public int ObjectNum;
     public string[] Decomposition;
+    public int CanUse;//0不可用，1可用
 }

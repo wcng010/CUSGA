@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
+public delegate void UseObject();
 public class BagManager : Singleton<BagManager>
 {
     [Header("信息Data数组")]
@@ -39,9 +40,8 @@ public class BagManager : Singleton<BagManager>
     [Header("合成检测数组")] 
     private string[] CheckStrings = new string[20];
     private String CheckString;
-
-    
-
+    public UseObject useObject;
+    public int UsedCount=0;
     public void RefreshBrush()
     {
        BagClear();
