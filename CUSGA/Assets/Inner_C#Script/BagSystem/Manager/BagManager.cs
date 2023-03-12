@@ -39,9 +39,13 @@ public class BagManager : Singleton<BagManager>
     public int boundary_Inventory;
     [Header("合成检测数组")] 
     private string[] CheckStrings = new string[20];
+    [Header("合成检测String")]
     private String CheckString;
     public UseObject useObject;
+    [NonSerialized]
     public int UsedCount=0;
+    [Header("开始时需要添加的笔画")] 
+    public string[]BeginBrushs;
     public void RefreshBrush()
     {
        BagClear();
@@ -161,7 +165,7 @@ public class BagManager : Singleton<BagManager>
             {
                 for (int j = 0; j < DataListClass.BrushList.Count; j++)
                 {
-                    if (DataListClass.ObjectList[boundary_Inventory].Decomposition[i] ==
+                    if (DataListClass.BrushList[j]!=null&&DataListClass.ObjectList[boundary_Inventory].Decomposition[i] ==
                         DataListClass.BrushList[j]._brushName)
                     {
                         Debug.Log(DataListClass.BrushList[j]._brushName+"数量加一");
@@ -332,12 +336,197 @@ public class BagManager : Singleton<BagManager>
             if (item != null)
                 item.ObjectNum = 0;
         }
+        AddBrushOnBegin();
+        EnterScenesAndClearBrush();
+        EnterScenesAndClearObject();
+    }
+
+    private void AddBrushOnBegin()
+    {
+        for(int i=0;i<BeginBrushs.Length;i++)
+        for (int j = 0; j < DataListClass.BrushList.Count; j++)
+        {
+            if (BeginBrushs[i] == null) return;
+            if (DataListClass.BrushList[j] != null &&
+                DataListClass.BrushList[j]._brushName.CompareTo(BeginBrushs[i]) == 0)
+            {
+                DataListClass.BrushList[j]._brushNum++;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 对所有笔画格子进行排序，
+    /// 将空格子移到后方
+    /// 再将笔画为0的格子移到后方
+    /// </summary>
+    public void EnterScenesAndClearBrush()
+    {
+        for (int i = 0; i < DataListClass.BrushList.Count; i++)
+        {
+            if (DataListClass.BrushList[i] == null)
+            {
+                if (!FindOtherBrush(i, DataListClass.BrushList.Count))
+                {
+                    break;
+                }
+            }
+        }
+        
+        for (int i = 0; i < DataListClass.BrushList.Count; i++)
+        {
+            if (DataListClass.BrushList[i]!=null&&DataListClass.BrushList[i]._brushNum==0)
+            {
+                if (!FindFullBrush(i, DataListClass.BrushList.Count))
+                {
+                    break;
+                }
+            }
+        }
+
+    }
+
+    private bool FindOtherBrush(int FirstIndex,int EndIndex)
+    {
+        for (int i = FirstIndex+1; i < EndIndex; i++)
+        {
+            if (DataListClass.BrushList[i] != null)
+            {
+                DataListClass.BrushList[FirstIndex] = DataListClass.BrushList[i];
+                DataListClass.BrushList[i] = null;
+                return true;
+            }
+        }
+
+        return false;
+    }
+    private bool FindFullBrush(int FirstIndex,int EndIndex)
+    {
+        for (int i = FirstIndex+1; i < EndIndex; i++)
+        {
+            if (DataListClass.BrushList[i]!=null&&DataListClass.BrushList[i]._brushNum>0)
+            {
+                (DataListClass.BrushList[FirstIndex], DataListClass.BrushList[i]) = (DataListClass.BrushList[i], DataListClass.BrushList[FirstIndex]);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    ///
+    ///  
+    public void DeleteSameBrush()
+    {
+        for (int i = 0; i <= boundary_workbag; i++)
+        {
+            if(DataListClass.BrushList[i]==null)
+                continue;
+            for (int j = 0; j <= boundary_workbag; j++)
+            {
+                if (DataListClass.BrushList[j] == null)
+                    continue;
+                if (DataListClass.BrushList[i]!=null&&DataListClass.BrushList[j]!=null&&
+                    DataListClass.BrushList[i]._brushName.CompareTo(DataListClass.BrushList[j]._brushName) == 0
+                    &&i!=j)
+                {
+                    DataListClass.BrushList[j] = null;
+                }
+            }
+        }
     }
 
 
 
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void EnterScenesAndClearObject()
+    {
+        for (int i = 0; i <DataListClass.ObjectList.Count ; i++)
+        {
+            if (DataListClass.ObjectList[i] == null)
+            {
+                if (!FindOtherObject(i, DataListClass.ObjectList.Count-1))
+                {
+                    break;
+                }
+            }
+        }
+        
+        for (int i = 0; i <DataListClass.ObjectList.Count; i++)
+        {
+            if (DataListClass.ObjectList[i]!=null&&DataListClass.ObjectList[i].ObjectNum==0)
+            {
+                if (!FindFullObject(i, DataListClass.ObjectList.Count-1))
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    public void ClickBagAndClearObject()
+    {
+        for (int i = 0; i <=boundary_Inventory ; i++)
+        {
+            if (DataListClass.ObjectList[i] == null)
+            {
+                if (!FindOtherObject(i, boundary_Inventory))
+                {
+                    break;
+                }
+            }
+        }
+        
+        for (int i = 0; i <=boundary_Inventory; i++)
+        {
+            if (DataListClass.ObjectList[i]!=null&&DataListClass.ObjectList[i].ObjectNum==0)
+            {
+                if (!FindFullObject(i, boundary_Inventory))
+                {
+                    break;
+                }
+            }
+        }
+
+    }
+    
+
+    private bool FindOtherObject(int FirstIndex,int EndIndex)
+    {
+        for (int i = FirstIndex+1; i <=EndIndex; i++)
+        {
+            if (DataListClass.ObjectList[i] != null)
+            {
+                DataListClass.ObjectList[FirstIndex] = DataListClass.ObjectList[i];
+                DataListClass.ObjectList[i] = null;
+                return true;
+            }
+        }
+
+        return false;
+    }
+    private bool FindFullObject(int FirstIndex,int EndIndex)
+    {
+        for (int i = FirstIndex+1; i <=EndIndex; i++)
+        {
+            if (DataListClass.ObjectList[i]!=null&&DataListClass.ObjectList[i].ObjectNum>0)
+            {
+                (DataListClass.ObjectList[FirstIndex], DataListClass.ObjectList[i]) = (DataListClass.ObjectList[i], DataListClass.ObjectList[FirstIndex]);
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    
     private void Start()
-    {   EnterScenes();
+    {   RefreshBrush();
+        RefreshObject();
+        EnterScenes();
         RefreshObject();
     }
 }
