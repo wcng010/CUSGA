@@ -77,8 +77,14 @@ public class Interaction : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
-        sprite.enabled = true;
+        if(IsObj)
+        {
+            if (collision.tag == "Player")
+                sprite.enabled = true;
+        }
+        else if(collision.tag == "Player" && index < textFile.Length)
+            sprite.enabled = true;
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)

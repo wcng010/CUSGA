@@ -15,7 +15,7 @@ public class TrafficLight : Ohters<TrafficLight>
         if(inter.index == 1 && Input.GetKeyDown(KeyCode.F))
         {
             stopCar.layer = LayerMask.NameToLayer("Car");
-            coll.isTrigger = true;
+            stopCar.GetComponent<Collider2D>().isTrigger = true;
 
             //½áÊø
         }
