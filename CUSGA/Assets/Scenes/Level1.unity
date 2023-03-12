@@ -674,6 +674,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   needStrings:
   - "\u95E8"
+  inter: {fileID: 0}
 --- !u!61 &495380097
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1031,6 +1032,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   needStrings:
   - "\u6865"
+  inter: {fileID: 0}
 --- !u!1 &586418347 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7269412576107744931, guid: 2a7ea43fc39d5f54493600fe052fc484, type: 3}
@@ -1466,7 +1468,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8408000620386787210, guid: 934fd5b36961c0145b5afe48e0b1172b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.04
+      value: -0.16
       objectReference: {fileID: 0}
     - target: {fileID: 8408000620386787210, guid: 934fd5b36961c0145b5afe48e0b1172b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2164,6 +2166,7 @@ MonoBehaviour:
   needStrings:
   - "\u955C"
   - "\u62D0"
+  inter: {fileID: 0}
 --- !u!1 &1657049058
 GameObject:
   m_ObjectHideFlags: 0
@@ -2349,6 +2352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   needStrings:
   - "\u952E"
+  inter: {fileID: 0}
   stopCar: {fileID: 111549894}
 --- !u!114 &1718574913 stripped
 MonoBehaviour:

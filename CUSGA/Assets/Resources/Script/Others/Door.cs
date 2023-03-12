@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Door : Ohters<Door>
 {
-    private void Start()
+    public override void Start()
     {
         base.Start();
         BagManager.Instance.useObject += useDoor;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bridge : Ohters<Bridge>
 {
-    private void Start()
+    public override void Start()
     {
         base.Start();
         BagManager.Instance.useObject += useBridge;

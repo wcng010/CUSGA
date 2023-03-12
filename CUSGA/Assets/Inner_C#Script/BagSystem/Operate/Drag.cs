@@ -67,6 +67,7 @@ public class Drag : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
                 return;
             if (ClickItemID > BagManager.Instance.boundary_Inventory && !BagManager.Instance.plaidGrid.activeSelf&&listClass.ObjectList[ClickItemID].CanUse==1)
             {
+                print("ssssssss");
                 BagManager.Instance.useObject.Invoke();
                 if (BagManager.Instance.UsedCount == 0)
                 {
