@@ -14,6 +14,5 @@ public class Door : Ohters<Door>
         {
             ShowObject();
         }
-
     }
 }

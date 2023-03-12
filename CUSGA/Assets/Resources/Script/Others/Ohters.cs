@@ -11,7 +11,7 @@ public class Ohters<T> : MonoBehaviour where T : class
 
     protected Collider2D coll;
     protected SpriteRenderer spr;
-    protected Interaction inter;
+    public Interaction inter;
 
     protected int succeed;
     protected bool close = false;
